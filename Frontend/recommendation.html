@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Your Scent – SCENTHOOD</title>
+
   <style>
     * {
       margin: 0;
@@ -52,6 +53,10 @@
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
     }
 
+    .highlight {
+      border: 1px solid rgba(212,175,55,0.4);
+    }
+
     .perfume-name {
       font-size: 18px;
       font-weight: 600;
@@ -78,10 +83,6 @@
       padding-top: 10px;
     }
 
-    .highlight {
-      border: 1px solid rgba(212,175,55,0.4);
-    }
-
     .cta {
       text-align: center;
       margin-top: 50px;
@@ -98,52 +99,54 @@
     }
   </style>
 </head>
+
 <body>
 
   <h1>Your Personalized Recommendations</h1>
-  <p class="subtitle">AI-matched scents based on what you own + your current mood & environment ✨</p>
+  <p class="subtitle">
+    AI-matched scents based on your collection, mood & environment ✨
+  </p>
 
-  <!-- From User Collection -->
+  <!-- FROM USER COLLECTION -->
   <h2 class="section-title">From Your Collection 💼</h2>
   <div class="cards">
 
+    {% for perfume in owned_recommendations %}
     <div class="card highlight">
-      <div class="perfume-name">🌙 Dior Sauvage</div>
-      <div class="brand">Christian Dior</div>
-      <div class="notes">Notes: Bergamot, Pepper, Ambroxan</div>
+      <div class="perfume-name">✨ {{ perfume.name }}</div>
+      <div class="brand">{{ perfume.brand }}</div>
+      <div class="notes">Notes: {{ perfume.notes }}</div>
       <div class="reason">
-        You already own this scent. AI recommends it today due to your confident mood, evening time, and cool weather.
+        {{ perfume.reason }}
       </div>
     </div>
-
-    <div class="card highlight">
-      <div class="perfume-name">🔥 YSL Y EDP</div>
-      <div class="brand">Yves Saint Laurent</div>
-      <div class="notes">Notes: Apple, Ginger, Sage, Tonka Bean</div>
-      <div class="reason">
-        Selected from your collection for energetic occasions and social outings.
-      </div>
-    </div>
+    {% else %}
+      <p>You don’t have any perfumes saved yet.</p>
+    {% endfor %}
 
   </div>
 
-  <!-- New Discovery -->
+  <!-- NEW DISCOVERIES -->
   <h2 class="section-title">Discover Something New ✨</h2>
   <div class="cards">
 
+    {% for perfume in new_recommendations %}
     <div class="card">
-      <div class="perfume-name">🌿 Bleu de Chanel</div>
-      <div class="brand">Chanel</div>
-      <div class="notes">Notes: Citrus, Incense, Cedarwood</div>
+      <div class="perfume-name">🌿 {{ perfume.name }}</div>
+      <div class="brand">{{ perfume.brand }}</div>
+      <div class="notes">Notes: {{ perfume.notes }}</div>
       <div class="reason">
-        Based on patterns in your collection, AI suggests this versatile scent as a refined upgrade you may enjoy.
+        {{ perfume.reason }}
       </div>
     </div>
+    {% else %}
+      <p>No new recommendations right now.</p>
+    {% endfor %}
 
   </div>
 
   <div class="cta">
-    <a href="discover.html">Refine Preferences</a>
+    <a href="{{ url_for('discover') }}">Refine Preferences</a>
   </div>
 
 </body>
