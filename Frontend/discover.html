@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Discover Your Scent – SCENTHOOD</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', Arial, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #1a1a1a, #000000);
+      color: #f5f5f5;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.06);
+      padding: 40px;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 520px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    h2 {
+      text-align: center;
+      color: #d4af37;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+
+    p.subtitle {
+      text-align: center;
+      color: #bbbbbb;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+
+    .question {
+      margin-bottom: 22px;
+    }
+
+    .question label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 15px;
+      padding: 14px;
+      border-radius: 30px;
+      border: none;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(135deg, #d4af37, #b8962e);
+      color: #000;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(212, 175, 55, 0.35);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Discover Your Scent</h2>
+    <p class="subtitle">Answer a few questions and let us find your perfect perfume ✨</p>
+
+    <form action="recommendation.html" method="GET">
+
+      <div class="question">
+        <label>😊 What’s your mood right now?</label>
+        <select required>
+          <option value="">Select mood</option>
+          <option>😊 Happy & Energetic</option>
+          <option>😌 Calm & Relaxed</option>
+          <option>😍 Romantic</option>
+          <option>🔥 Bold & Confident</option>
+          <option>🤍 Soft & Minimal</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label>🎉 What’s the occasion?</label>
+        <select required>
+          <option value="">Select occasion</option>
+          <option>🏢 Work / Office</option>
+          <option>🎈 Casual Day Out</option>
+          <option>💃 Party / Night Out</option>
+          <option>❤️ Date / Special Event</option>
+          <option>🏠 Everyday Wear</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label>⏰ What time of day is it?</label>
+        <select required>
+          <option value="">Select time</option>
+          <option>🌅 Morning</option>
+          <option>☀️ Afternoon</option>
+          <option>🌇 Evening</option>
+          <option>🌙 Night</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label>🌦️ What’s the weather like?</label>
+        <select required>
+          <option value="">Select weather</option>
+          <option>☀️ Sunny / Hot</option>
+          <option>🌤️ Pleasant</option>
+          <option>🌧️ Rainy</option>
+          <option>❄️ Cold / Winter</option>
+          <option>🌫️ Humid</option>
+        </select>
+      </div>
+
+      <button type="submit">Get My Recommendation</button>
+    </form>
+
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Collection – SCENTHOOD</title>
+
+  <style>
+    body {
+      background: radial-gradient(circle at top, #1a1a1a, #000);
+      color: #fff;
+      font-family: Poppins, Arial, sans-serif;
+      padding: 40px 20px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #d4af37;
+      margin-bottom: 30px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+    }
+
+    .perfume-block {
+      background: rgba(255,255,255,0.06);
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: none;
+    }
+
+    .add-btn, .submit-btn {
+      width: 100%;
+      padding: 14px;
+      margin-top: 15px;
+      border-radius: 30px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .add-btn {
+      background: transparent;
+      color: #d4af37;
+      border: 1px dashed #d4af37;
+    }
+
+    .submit-btn {
+      background: linear-gradient(135deg, #d4af37, #b8962e);
+      color: #000;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h2>Your Perfume Collection 💼</h2>
+
+    <form action="discover.html" method="GET" id="collectionForm">
+
+      <div id="perfumeContainer">
+
+        <!-- First perfume -->
+        <div class="perfume-block">
+          <input type="text" placeholder="Brand" required>
+          <input type="text" placeholder="Perfume Name" required>
+          <input type="text" placeholder="Key Notes (e.g. Vanilla, Citrus)" required>
+          <input type="text" placeholder="Scent Type (Fresh, Woody, Floral)" required>
+        </div>
+
+      </div>
+
+      <button type="button" class="add-btn" onclick="addPerfume()">
+        + Add Another Perfume
+      </button>
+
+      <button type="submit" class="submit-btn">
+        Continue to Discover ✨
+      </button>
+
+    </form>
+  </div>
+
+  <script>
+    function addPerfume() {
+      const container = document.getElementById("perfumeContainer");
+
+      const block = document.createElement("div");
+      block.className = "perfume-block";
+
+      block.innerHTML = `
+        <input type="text" placeholder="Brand" required>
+        <input type="text" placeholder="Perfume Name" required>
+        <input type="text" placeholder="Key Notes (e.g. Vanilla, Citrus)" required>
+        <input type="text" placeholder="Scent Type (Fresh, Woody, Floral)" required>
+      `;
+
+      container.appendChild(block);
+    }
+  </script>
+
+</body>
+</html>

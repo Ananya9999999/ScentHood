@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Scent – SCENTHOOD</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', Arial, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #1a1a1a, #000000);
+      color: #f5f5f5;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #d4af37;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #bbbbbb;
+      margin-bottom: 40px;
+    }
+
+    .section-title {
+      margin: 40px 0 20px;
+      color: #d4af37;
+      letter-spacing: 1px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.06);
+      padding: 25px;
+      border-radius: 20px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .perfume-name {
+      font-size: 18px;
+      font-weight: 600;
+      color: #d4af37;
+      margin-bottom: 6px;
+    }
+
+    .brand {
+      font-size: 14px;
+      color: #cccccc;
+      margin-bottom: 10px;
+    }
+
+    .notes {
+      font-size: 14px;
+      margin-bottom: 12px;
+      color: #e0e0e0;
+    }
+
+    .reason {
+      font-size: 13px;
+      color: #bbbbbb;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 10px;
+    }
+
+    .highlight {
+      border: 1px solid rgba(212,175,55,0.4);
+    }
+
+    .cta {
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    .cta a {
+      display: inline-block;
+      padding: 14px 30px;
+      border-radius: 30px;
+      background: linear-gradient(135deg, #d4af37, #b8962e);
+      color: #000;
+      font-weight: 600;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Your Personalized Recommendations</h1>
+  <p class="subtitle">AI-matched scents based on what you own + your current mood & environment ✨</p>
+
+  <!-- From User Collection -->
+  <h2 class="section-title">From Your Collection 💼</h2>
+  <div class="cards">
+
+    <div class="card highlight">
+      <div class="perfume-name">🌙 Dior Sauvage</div>
+      <div class="brand">Christian Dior</div>
+      <div class="notes">Notes: Bergamot, Pepper, Ambroxan</div>
+      <div class="reason">
+        You already own this scent. AI recommends it today due to your confident mood, evening time, and cool weather.
+      </div>
+    </div>
+
+    <div class="card highlight">
+      <div class="perfume-name">🔥 YSL Y EDP</div>
+      <div class="brand">Yves Saint Laurent</div>
+      <div class="notes">Notes: Apple, Ginger, Sage, Tonka Bean</div>
+      <div class="reason">
+        Selected from your collection for energetic occasions and social outings.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- New Discovery -->
+  <h2 class="section-title">Discover Something New ✨</h2>
+  <div class="cards">
+
+    <div class="card">
+      <div class="perfume-name">🌿 Bleu de Chanel</div>
+      <div class="brand">Chanel</div>
+      <div class="notes">Notes: Citrus, Incense, Cedarwood</div>
+      <div class="reason">
+        Based on patterns in your collection, AI suggests this versatile scent as a refined upgrade you may enjoy.
+      </div>
+    </div>
+
+  </div>
+
+  <div class="cta">
+    <a href="discover.html">Refine Preferences</a>
+  </div>
+
+</body>
+</html>

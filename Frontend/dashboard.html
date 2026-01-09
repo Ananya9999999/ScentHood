@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard – SCENTHOOD</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', Arial, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #1a1a1a, #000000);
+      color: #f5f5f5;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    header h1 {
+      color: #d4af37;
+      letter-spacing: 2px;
+    }
+
+    header p {
+      color: #bbbbbb;
+      margin-top: 8px;
+    }
+
+    .dashboard {
+      max-width: 1000px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.06);
+      padding: 25px;
+      border-radius: 20px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+    }
+
+    .card h2 {
+      color: #d4af37;
+      margin-bottom: 15px;
+    }
+
+    .item {
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .item:last-child {
+      border-bottom: none;
+    }
+
+    .item strong {
+      color: #ffffff;
+    }
+
+    .history-date {
+      font-size: 12px;
+      color: #bbbbbb;
+    }
+
+    .cta {
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    .cta a {
+      display: inline-block;
+      padding: 14px 30px;
+      border-radius: 30px;
+      background: linear-gradient(135deg, #d4af37, #b8962e);
+      color: #000;
+      font-weight: 600;
+      text-decoration: none;
+      margin: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Welcome to SCENTHOOD</h1>
+    <p>Your personal fragrance space ✨</p>
+  </header>
+
+  <div class="dashboard">
+
+    <!-- Collections Card -->
+    <div class="card">
+      <h2>My Collection 💼</h2>
+
+      <div class="item">
+        <strong>Dior Sauvage</strong><br />
+        Fresh • Spicy • Evening
+      </div>
+
+      <div class="item">
+        <strong>Gucci Bloom</strong><br />
+        Floral • Daytime
+      </div>
+
+      <div class="item">
+        <strong>YSL Y EDP</strong><br />
+        Woody • Versatile
+      </div>
+    </div>
+
+    <!-- History Card -->
+    <div class="card">
+      <h2>Recommendation History 🕒</h2>
+
+      <div class="item">
+        <strong>Dior Sauvage</strong><br />
+        <span class="history-date">Confident • Night • Cool — 12 Jan 2026</span>
+      </div>
+
+      <div class="item">
+        <strong>Gucci Bloom</strong><br />
+        <span class="history-date">Calm • Morning • Warm — 10 Jan 2026</span>
+      </div>
+
+      <div class="item">
+        <strong>Bleu de Chanel</strong><br />
+        <span class="history-date">Work • Afternoon • Mild — 08 Jan 2026</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="cta">
+    <a href="collection.html">Edit Collection</a>
+    <a href="discover.html">Get New Recommendation</a>
+  </div>
+
+</body>
+</html>
