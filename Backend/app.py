@@ -114,9 +114,9 @@ def recommend_perfume(perfumes, mood, occasion, time_of_day, weather):
 # ROUTES
 # ======================
 
-@app.route('/')
-def landing():
-    return render_template('index.html')
+@app.route('/test-backend')
+def test_backend():
+    return "Backend is working"
 
 # ---------- REGISTER ----------
 
