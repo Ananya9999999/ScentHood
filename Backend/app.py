@@ -2,207 +2,136 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-import os
+import random
 
-# ======================
-# APP SETUP
-# ======================
-
-app = Flask(__name__)
+# ===== Flask App Setup =====
+app = Flask(__name__, template_folder='../templates')  # templates folder is one level up
 app.secret_key = "scenthood_secret_key"
 
-# ======================
-# DATABASE CONFIG
-# ======================
-
+# ===== Database Config =====
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:12345678@localhost/scenthood'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 db = SQLAlchemy(app)
 
-# ======================
-# MODELS
-# ======================
-
+# ===== Models =====
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
-
     perfumes = db.relationship('Perfume', backref='owner', lazy=True)
     history = db.relationship('RecommendationHistory', backref='user', lazy=True)
 
-
 class Perfume(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
-    brand = db.Column(db.String(100), nullable=False)
-    name = db.Column(db.String(100), nullable=False)
-    notes = db.Column(db.String(200))        # comma separated
-    scent_type = db.Column(db.String(50))    # woody, fresh, spicy, etc.
-
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    brand = db.Column(db.String(100))
+    name = db.Column(db.String(100))
+    notes = db.Column(db.String(200))
+    scent_type = db.Column(db.String(50))
 
 class RecommendationHistory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    perfume_id = db.Column(db.Integer, db.ForeignKey('perfume.id'), nullable=False)
-
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    perfume_id = db.Column(db.Integer, db.ForeignKey('perfume.id'), nullable=True)
     mood = db.Column(db.String(50))
     occasion = db.Column(db.String(50))
-    time_of_day = db.Column(db.String(50))
+    time = db.Column(db.String(50))
     weather = db.Column(db.String(50))
+    ai_reason = db.Column(db.Text, nullable=True)
+    confidence = db.Column(db.Float, nullable=True)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
 
-    confidence = db.Column(db.Float)
-    ai_reason = db.Column(db.Text)
+# ===== Create Tables =====
+with app.app_context():
+    db.create_all()
 
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+# ===== Routes =====
 
-# ======================
-# UTILITY: AUTH CHECK
-# ======================
+# Landing Page
+@app.route('/')
+def landing():
+    return render_template('index.html')
 
-def login_required():
-    return 'user_id' in session
-
-# ======================
-# RECOMMENDATION ENGINE
-# ======================
-
-def recommend_perfume(perfumes, mood, occasion, time_of_day, weather):
-    best_score = -1
-    best_perfume = None
-    best_reason = ""
-
-    for p in perfumes:
-        score = 0.0
-        reasons = []
-
-        scent = (p.scent_type or "").lower()
-        notes = (p.notes or "").lower()
-
-        if mood == "confident" and "woody" in scent:
-            score += 0.3
-            reasons.append("woody scents boost confidence")
-
-        if mood == "romantic" and "sweet" in notes:
-            score += 0.3
-            reasons.append("sweet notes feel romantic")
-
-        if occasion == "office" and "fresh" in scent:
-            score += 0.2
-            reasons.append("fresh scents suit office wear")
-
-        if time_of_day == "evening" and "spicy" in notes:
-            score += 0.2
-            reasons.append("spicy notes work well in evenings")
-
-        if weather == "cool" and "amber" in notes:
-            score += 0.2
-            reasons.append("amber notes perform well in cool weather")
-
-        if score > best_score:
-            best_score = score
-            best_perfume = p
-            best_reason = ", ".join(reasons) if reasons else "Balanced everyday scent"
-
-    return best_perfume, round(best_score, 2), best_reason
-
-# ======================
-# ROUTES
-# ======================
-
-@app.route('/test-backend')
-def test_backend():
-    return "Backend is working"
-
-# ---------- REGISTER ----------
-
+# Registration
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        existing = User.query.filter_by(email=request.form['email']).first()
-        if existing:
-            return "Email already registered"
+        name = request.form['name']
+        email = request.form['email']
+        password = request.form['password']
+        confirm = request.form['confirm_password']
 
-        hashed_pw = generate_password_hash(request.form['password'])
+        if password != confirm:
+            return "Passwords do not match!"
 
-        user = User(
-            name=request.form['name'],
-            email=request.form['email'],
-            password=hashed_pw
-        )
+        if User.query.filter_by(email=email).first():
+            return "Email already registered!"
+
+        hashed_pw = generate_password_hash(password)
+        user = User(name=name, email=email, password=hashed_pw)
         db.session.add(user)
         db.session.commit()
-
         return redirect(url_for('login'))
 
-    return render_template('register.html')
+    return render_template('registration.html')
 
-# ---------- LOGIN ----------
-
+# Login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        user = User.query.filter_by(email=request.form['email']).first()
+        email = request.form['email']
+        password = request.form['password']
+        user = User.query.filter_by(email=email).first()
 
-        if user and check_password_hash(user.password, request.form['password']):
+        if user and check_password_hash(user.password, password):
             session['user_id'] = user.id
             return redirect(url_for('dashboard'))
-
-        return "Invalid credentials"
+        else:
+            return "Invalid credentials!"
 
     return render_template('login.html')
 
-# ---------- DASHBOARD ----------
-
+# Dashboard
 @app.route('/dashboard')
 def dashboard():
-    if not login_required():
+    if 'user_id' not in session:
         return redirect(url_for('login'))
 
-    perfumes = Perfume.query.filter_by(user_id=session['user_id']).all()
-    history = RecommendationHistory.query.filter_by(
-        user_id=session['user_id']
-    ).order_by(RecommendationHistory.created_at.desc()).all()
-
+    user_id = session['user_id']
+    perfumes = Perfume.query.filter_by(user_id=user_id).all()
+    history = RecommendationHistory.query.filter_by(user_id=user_id).order_by(RecommendationHistory.date.desc()).all()
     return render_template('dashboard.html', perfumes=perfumes, history=history)
 
-# ---------- COLLECTIONS ----------
+# Logout
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
 
+# Perfume Collection Page
 @app.route('/collections', methods=['GET', 'POST'])
 def collections():
-    if not login_required():
+    if 'user_id' not in session:
         return redirect(url_for('login'))
 
     if request.method == 'POST':
-        brand = request.form['brand']
         name = request.form['name']
+        brand = request.form['brand']
         notes = request.form['notes']
-        scent = request.form['scent']
+        scent_type = request.form['scent_type']
 
-        perfume = Perfume(
-            user_id=session['user_id'],
-            brand=brand,
-            name=name,
-            notes=notes,
-            scent_type=scent
-        )
+        perfume = Perfume(user_id=session['user_id'], name=name, brand=brand, notes=notes, scent_type=scent_type)
         db.session.add(perfume)
         db.session.commit()
+        return redirect(url_for('dashboard'))
 
-        return redirect(url_for('collections'))
+    return render_template('collections.html')
 
-    perfumes = Perfume.query.filter_by(user_id=session['user_id']).all()
-    return render_template('collections.html', perfumes=perfumes)
-
-# ---------- DISCOVER ----------
-
+# Discover / Mood Questionnaire
 @app.route('/discover', methods=['GET', 'POST'])
 def discover():
-    if not login_required():
+    if 'user_id' not in session:
         return redirect(url_for('login'))
 
     if request.method == 'POST':
@@ -211,66 +140,37 @@ def discover():
         time_of_day = request.form['time']
         weather = request.form['weather']
 
-        perfumes = Perfume.query.filter_by(user_id=session['user_id']).all()
-        if not perfumes:
-            return "No perfumes in collection"
+        user_perfumes = Perfume.query.filter_by(user_id=session['user_id']).all()
+        recommended = []
+        if user_perfumes:
+            recommended.append(random.choice(user_perfumes).name)
 
-        best_perfume, confidence, reason = recommend_perfume(
-            perfumes, mood, occasion, time_of_day, weather
-        )
-
-        history = RecommendationHistory(
-            user_id=session['user_id'],
-            perfume_id=best_perfume.id,
-            mood=mood,
-            occasion=occasion,
-            time_of_day=time_of_day,
-            weather=weather,
-            confidence=confidence,
-            ai_reason=reason
-        )
-
-        db.session.add(history)
+        # Save to history
+        for perfume_name in recommended:
+            history = RecommendationHistory(
+                user_id=session['user_id'],
+                mood=mood,
+                occasion=occasion,
+                time=time_of_day,
+                weather=weather
+            )
+            db.session.add(history)
         db.session.commit()
 
-        session['last_recommendation_id'] = history.id
+        session['recommended'] = recommended
         return redirect(url_for('recommendation'))
 
     return render_template('discover.html')
 
-# ---------- RECOMMENDATION ----------
-
+# Recommendation Page
 @app.route('/recommendation')
 def recommendation():
-    if not login_required():
+    if 'user_id' not in session:
         return redirect(url_for('login'))
 
-    history_id = session.get('last_recommendation_id')
-    if not history_id:
-        return redirect(url_for('dashboard'))
+    recommended_perfumes = session.get('recommended', [])
+    return render_template('recommendation.html', perfumes=recommended_perfumes)
 
-    history = RecommendationHistory.query.get(history_id)
-    perfume = Perfume.query.get(history.perfume_id)
-
-    return render_template(
-        'recommendation.html',
-        perfume=perfume,
-        confidence=history.confidence,
-        reason=history.ai_reason
-    )
-
-# ---------- LOGOUT ----------
-
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('login'))
-
-# ======================
-# RUN
-# ======================
-
+# ===== Run App =====
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
     app.run(debug=True)
