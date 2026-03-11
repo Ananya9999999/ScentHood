@@ -26,25 +26,25 @@ Optimized frontend and efficient backend structure for quick loading.
 
 🧰 Tech Stack
 
-Frontend
+**Frontend**
 
-    HTML
+HTML
 
-    CSS
+CSS
 
-    JavaScript
+JavaScript
 
-    React
+React
 
-Backend
+**Backend**
 
-    Python
+Python
 
-Other Tools
+**Other Tools**
 
-    Git & GitHub
+Git & GitHub
 
-    REST APIs
+REST APIs
 
 📂 Project Structure
 ```
@@ -93,27 +93,27 @@ npm start
 
 🎯 Future Improvements
 
-    AI-based fragrance recommendation system
+AI-based fragrance recommendation system
 
-    User accounts and wishlists
+User accounts and wishlists
 
-    Product reviews and ratings
+Product reviews and ratings
 
-    Personalized scent profiling
+Personalized scent profiling
 
-    Mobile application support
+Mobile application support
 
 🤝 Contributing
 
-    Contributions are welcome!
+Contributions are welcome!
 
-    Fork the repository
+Fork the repository
 
-    Create a new branch
+Create a new branch
 
-    Commit your changes
+Commit your changes
 
-    Open a Pull Request
+Open a Pull Request
 
 📜 License
 
